@@ -89,3 +89,47 @@ func (empHand *employeeHandler) Delete(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, emp)
 }
+
+// Join Edges With Company
+func (empHand *employeeHandler) EmployeeWithCompany(c echo.Context) error {
+	ctx := context.Background()
+
+	emps := empHand.db.Employee.Query().WithCompanies().AllX(ctx)
+
+	return c.JSON(http.StatusOK, emps)
+}
+
+func (empHand *employeeHandler) EmployeeIDWithCompany(c echo.Context) error {
+	ctx := context.Background()
+
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	emp := empHand.db.Employee.Query().Where(employee.ID(id)).WithCompanies().AllX(ctx)
+
+	return c.JSON(http.StatusOK, emp)
+}
+
+func (empHand *employeeHandler) EmployeeWithCompanyID(c echo.Context) error {
+	ctx := context.Background()
+
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	emp := empHand.db.Employee.Query().WithCompanies(func(com *ent.CompanyQuery) {
+		com.Where(company.ID(id)).AllX(ctx)
+	}).AllX(ctx)
+
+	return c.JSON(http.StatusOK, emp)
+}
+
+func (empHand *employeeHandler) EmployeeIDWithCompanyID(c echo.Context) error {
+	ctx := context.Background()
+
+	employeeid, _ := strconv.Atoi(c.Param("employeeid"))
+	companyid, _ := strconv.Atoi(c.Param("companyid"))
+
+	emp := empHand.db.Employee.Query().Where(employee.ID(employeeid)).WithCompanies(func(com *ent.CompanyQuery) {
+		com.Where(company.ID(companyid)).AllX(ctx)
+	}).AllX(ctx)
+
+	return c.JSON(http.StatusOK, emp)
+}

@@ -88,6 +88,7 @@ func (compHand *companyHandler) Delete(c echo.Context) error {
 	return c.JSON(http.StatusOK, comp)
 }
 
+// Join Edges With Employee
 func (compHand *companyHandler) CompanyWithEmployee(c echo.Context) error {
 	ctx := context.Background()
 
