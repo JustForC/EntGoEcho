@@ -36,6 +36,12 @@ func Init() *echo.Echo {
 	e.PUT("/company/:id", companyHand.Update)
 	e.DELETE("/company/:id", companyHand.Delete)
 
+	// Join Company With Employee
+	e.GET("/company/employee", companyHand.CompanyWithEmployee)
+	e.GET("/company/:id/employee", companyHand.CompanyIDWithEmployee)
+	e.GET("/company/employee/:id", companyHand.CompanyWithEmployeeID)
+	e.GET("/company/:companyid/employee/:employeeid", companyHand.CompanyIDWithEmployeeID)
+
 	// Employee
 	e.POST("/employee", employeeHand.Create)
 	e.GET("/employee", employeeHand.Read)

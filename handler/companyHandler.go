@@ -3,6 +3,7 @@ package handler
 import (
 	"CompanyAPI/ent"
 	"CompanyAPI/ent/company"
+	"CompanyAPI/ent/employee"
 	"CompanyAPI/request"
 	"context"
 	"log"
@@ -83,6 +84,46 @@ func (compHand *companyHandler) Delete(c echo.Context) error {
 	if del != nil {
 		log.Fatal(del)
 	}
+
+	return c.JSON(http.StatusOK, comp)
+}
+
+func (compHand *companyHandler) CompanyWithEmployee(c echo.Context) error {
+	ctx := context.Background()
+
+	comps := compHand.db.Company.Query().WithEmployees().AllX(ctx)
+
+	return c.JSON(http.StatusOK, comps)
+}
+
+func (compHand *companyHandler) CompanyIDWithEmployee(c echo.Context) error {
+	ctx := context.Background()
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	comp := compHand.db.Company.Query().Where(company.ID(id)).WithEmployees().AllX(ctx)
+
+	return c.JSON(http.StatusOK, comp)
+}
+
+func (compHand *companyHandler) CompanyWithEmployeeID(c echo.Context) error {
+	ctx := context.Background()
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	comp := compHand.db.Company.Query().WithEmployees(func(emp *ent.EmployeeQuery) {
+		emp.Where(employee.ID(id)).AllX(ctx)
+	}).AllX(ctx)
+
+	return c.JSON(http.StatusOK, comp)
+}
+
+func (compHand *companyHandler) CompanyIDWithEmployeeID(c echo.Context) error {
+	ctx := context.Background()
+	companyid, _ := strconv.Atoi(c.Param("companyid"))
+	employeeid, _ := strconv.Atoi(c.Param("employeeid"))
+
+	comp := compHand.db.Company.Query().Where(company.ID(companyid)).WithEmployees(func(emp *ent.EmployeeQuery) {
+		emp.Where(employee.ID(employeeid)).AllX(ctx)
+	}).AllX(ctx)
 
 	return c.JSON(http.StatusOK, comp)
 }
