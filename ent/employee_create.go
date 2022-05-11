@@ -38,23 +38,23 @@ func (ec *EmployeeCreate) SetPosition(s string) *EmployeeCreate {
 	return ec
 }
 
-// SetCompanyID sets the "company" edge to the Company entity by ID.
-func (ec *EmployeeCreate) SetCompanyID(id int) *EmployeeCreate {
-	ec.mutation.SetCompanyID(id)
+// SetCompaniesID sets the "companies" edge to the Company entity by ID.
+func (ec *EmployeeCreate) SetCompaniesID(id int) *EmployeeCreate {
+	ec.mutation.SetCompaniesID(id)
 	return ec
 }
 
-// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
-func (ec *EmployeeCreate) SetNillableCompanyID(id *int) *EmployeeCreate {
+// SetNillableCompaniesID sets the "companies" edge to the Company entity by ID if the given value is not nil.
+func (ec *EmployeeCreate) SetNillableCompaniesID(id *int) *EmployeeCreate {
 	if id != nil {
-		ec = ec.SetCompanyID(*id)
+		ec = ec.SetCompaniesID(*id)
 	}
 	return ec
 }
 
-// SetCompany sets the "company" edge to the Company entity.
-func (ec *EmployeeCreate) SetCompany(c *Company) *EmployeeCreate {
-	return ec.SetCompanyID(c.ID)
+// SetCompanies sets the "companies" edge to the Company entity.
+func (ec *EmployeeCreate) SetCompanies(c *Company) *EmployeeCreate {
+	return ec.SetCompaniesID(c.ID)
 }
 
 // Mutation returns the EmployeeMutation object of the builder.
@@ -187,12 +187,12 @@ func (ec *EmployeeCreate) createSpec() (*Employee, *sqlgraph.CreateSpec) {
 		})
 		_node.Position = value
 	}
-	if nodes := ec.mutation.CompanyIDs(); len(nodes) > 0 {
+	if nodes := ec.mutation.CompaniesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.CompanyTable,
-			Columns: []string{employee.CompanyColumn},
+			Table:   employee.CompaniesTable,
+			Columns: []string{employee.CompaniesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

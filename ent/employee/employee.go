@@ -13,17 +13,17 @@ const (
 	FieldSalary = "salary"
 	// FieldPosition holds the string denoting the position field in the database.
 	FieldPosition = "position"
-	// EdgeCompany holds the string denoting the company edge name in mutations.
-	EdgeCompany = "company"
+	// EdgeCompanies holds the string denoting the companies edge name in mutations.
+	EdgeCompanies = "companies"
 	// Table holds the table name of the employee in the database.
 	Table = "employees"
-	// CompanyTable is the table that holds the company relation/edge.
-	CompanyTable = "employees"
-	// CompanyInverseTable is the table name for the Company entity.
+	// CompaniesTable is the table that holds the companies relation/edge.
+	CompaniesTable = "employees"
+	// CompaniesInverseTable is the table name for the Company entity.
 	// It exists in this package in order to avoid circular dependency with the "company" package.
-	CompanyInverseTable = "companies"
-	// CompanyColumn is the table column denoting the company relation/edge.
-	CompanyColumn = "company_employees"
+	CompaniesInverseTable = "companies"
+	// CompaniesColumn is the table column denoting the companies relation/edge.
+	CompaniesColumn = "company_employees"
 )
 
 // Columns holds all SQL columns for employee fields.

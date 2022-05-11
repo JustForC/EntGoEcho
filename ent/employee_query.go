@@ -26,8 +26,8 @@ type EmployeeQuery struct {
 	fields     []string
 	predicates []predicate.Employee
 	// eager-loading edges.
-	withCompany *CompanyQuery
-	withFKs     bool
+	withCompanies *CompanyQuery
+	withFKs       bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -64,8 +64,8 @@ func (eq *EmployeeQuery) Order(o ...OrderFunc) *EmployeeQuery {
 	return eq
 }
 
-// QueryCompany chains the current query on the "company" edge.
-func (eq *EmployeeQuery) QueryCompany() *CompanyQuery {
+// QueryCompanies chains the current query on the "companies" edge.
+func (eq *EmployeeQuery) QueryCompanies() *CompanyQuery {
 	query := &CompanyQuery{config: eq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := eq.prepareQuery(ctx); err != nil {
@@ -78,7 +78,7 @@ func (eq *EmployeeQuery) QueryCompany() *CompanyQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(employee.Table, employee.FieldID, selector),
 			sqlgraph.To(company.Table, company.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, employee.CompanyTable, employee.CompanyColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, employee.CompaniesTable, employee.CompaniesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(eq.driver.Dialect(), step)
 		return fromU, nil
@@ -262,12 +262,12 @@ func (eq *EmployeeQuery) Clone() *EmployeeQuery {
 		return nil
 	}
 	return &EmployeeQuery{
-		config:      eq.config,
-		limit:       eq.limit,
-		offset:      eq.offset,
-		order:       append([]OrderFunc{}, eq.order...),
-		predicates:  append([]predicate.Employee{}, eq.predicates...),
-		withCompany: eq.withCompany.Clone(),
+		config:        eq.config,
+		limit:         eq.limit,
+		offset:        eq.offset,
+		order:         append([]OrderFunc{}, eq.order...),
+		predicates:    append([]predicate.Employee{}, eq.predicates...),
+		withCompanies: eq.withCompanies.Clone(),
 		// clone intermediate query.
 		sql:    eq.sql.Clone(),
 		path:   eq.path,
@@ -275,14 +275,14 @@ func (eq *EmployeeQuery) Clone() *EmployeeQuery {
 	}
 }
 
-// WithCompany tells the query-builder to eager-load the nodes that are connected to
-// the "company" edge. The optional arguments are used to configure the query builder of the edge.
-func (eq *EmployeeQuery) WithCompany(opts ...func(*CompanyQuery)) *EmployeeQuery {
+// WithCompanies tells the query-builder to eager-load the nodes that are connected to
+// the "companies" edge. The optional arguments are used to configure the query builder of the edge.
+func (eq *EmployeeQuery) WithCompanies(opts ...func(*CompanyQuery)) *EmployeeQuery {
 	query := &CompanyQuery{config: eq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	eq.withCompany = query
+	eq.withCompanies = query
 	return eq
 }
 
@@ -353,10 +353,10 @@ func (eq *EmployeeQuery) sqlAll(ctx context.Context) ([]*Employee, error) {
 		withFKs     = eq.withFKs
 		_spec       = eq.querySpec()
 		loadedTypes = [1]bool{
-			eq.withCompany != nil,
+			eq.withCompanies != nil,
 		}
 	)
-	if eq.withCompany != nil {
+	if eq.withCompanies != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -382,7 +382,7 @@ func (eq *EmployeeQuery) sqlAll(ctx context.Context) ([]*Employee, error) {
 		return nodes, nil
 	}
 
-	if query := eq.withCompany; query != nil {
+	if query := eq.withCompanies; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Employee)
 		for i := range nodes {
@@ -406,7 +406,7 @@ func (eq *EmployeeQuery) sqlAll(ctx context.Context) ([]*Employee, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "company_employees" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.Company = n
+				nodes[i].Edges.Companies = n
 			}
 		}
 	}

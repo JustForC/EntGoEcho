@@ -23,6 +23,6 @@ func (Employee) Fields() []ent.Field {
 // Edges of the Employee.
 func (Employee) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("employees").Unique(),
+		edge.From("companies", Company.Type).Ref("employees").Unique(),
 	}
 }

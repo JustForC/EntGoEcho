@@ -411,25 +411,25 @@ func PositionContainsFold(v string) predicate.Employee {
 	})
 }
 
-// HasCompany applies the HasEdge predicate on the "company" edge.
-func HasCompany() predicate.Employee {
+// HasCompanies applies the HasEdge predicate on the "companies" edge.
+func HasCompanies() predicate.Employee {
 	return predicate.Employee(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CompanyTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
+			sqlgraph.To(CompaniesTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, CompaniesTable, CompaniesColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasCompanyWith applies the HasEdge predicate on the "company" edge with a given conditions (other predicates).
-func HasCompanyWith(preds ...predicate.Company) predicate.Employee {
+// HasCompaniesWith applies the HasEdge predicate on the "companies" edge with a given conditions (other predicates).
+func HasCompaniesWith(preds ...predicate.Company) predicate.Employee {
 	return predicate.Employee(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CompanyInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
+			sqlgraph.To(CompaniesInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, CompaniesTable, CompaniesColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

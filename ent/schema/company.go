@@ -14,7 +14,7 @@ type Company struct {
 // Fields of the Company.
 func (Company) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name"),
+		field.String("name").Unique(),
 		field.String("service"),
 		field.String("address").Unique(),
 	}

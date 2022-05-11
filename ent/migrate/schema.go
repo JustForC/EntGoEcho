@@ -11,7 +11,7 @@ var (
 	// CompaniesColumns holds the columns for the "companies" table.
 	CompaniesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "service", Type: field.TypeString},
 		{Name: "address", Type: field.TypeString, Unique: true},
 	}

@@ -542,19 +542,19 @@ func (m *CompanyMutation) ResetEdge(name string) error {
 // EmployeeMutation represents an operation that mutates the Employee nodes in the graph.
 type EmployeeMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *int
-	name           *string
-	salary         *int32
-	addsalary      *int32
-	position       *string
-	clearedFields  map[string]struct{}
-	company        *int
-	clearedcompany bool
-	done           bool
-	oldValue       func(context.Context) (*Employee, error)
-	predicates     []predicate.Employee
+	op               Op
+	typ              string
+	id               *int
+	name             *string
+	salary           *int32
+	addsalary        *int32
+	position         *string
+	clearedFields    map[string]struct{}
+	companies        *int
+	clearedcompanies bool
+	done             bool
+	oldValue         func(context.Context) (*Employee, error)
+	predicates       []predicate.Employee
 }
 
 var _ ent.Mutation = (*EmployeeMutation)(nil)
@@ -783,43 +783,43 @@ func (m *EmployeeMutation) ResetPosition() {
 	m.position = nil
 }
 
-// SetCompanyID sets the "company" edge to the Company entity by id.
-func (m *EmployeeMutation) SetCompanyID(id int) {
-	m.company = &id
+// SetCompaniesID sets the "companies" edge to the Company entity by id.
+func (m *EmployeeMutation) SetCompaniesID(id int) {
+	m.companies = &id
 }
 
-// ClearCompany clears the "company" edge to the Company entity.
-func (m *EmployeeMutation) ClearCompany() {
-	m.clearedcompany = true
+// ClearCompanies clears the "companies" edge to the Company entity.
+func (m *EmployeeMutation) ClearCompanies() {
+	m.clearedcompanies = true
 }
 
-// CompanyCleared reports if the "company" edge to the Company entity was cleared.
-func (m *EmployeeMutation) CompanyCleared() bool {
-	return m.clearedcompany
+// CompaniesCleared reports if the "companies" edge to the Company entity was cleared.
+func (m *EmployeeMutation) CompaniesCleared() bool {
+	return m.clearedcompanies
 }
 
-// CompanyID returns the "company" edge ID in the mutation.
-func (m *EmployeeMutation) CompanyID() (id int, exists bool) {
-	if m.company != nil {
-		return *m.company, true
+// CompaniesID returns the "companies" edge ID in the mutation.
+func (m *EmployeeMutation) CompaniesID() (id int, exists bool) {
+	if m.companies != nil {
+		return *m.companies, true
 	}
 	return
 }
 
-// CompanyIDs returns the "company" edge IDs in the mutation.
+// CompaniesIDs returns the "companies" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// CompanyID instead. It exists only for internal usage by the builders.
-func (m *EmployeeMutation) CompanyIDs() (ids []int) {
-	if id := m.company; id != nil {
+// CompaniesID instead. It exists only for internal usage by the builders.
+func (m *EmployeeMutation) CompaniesIDs() (ids []int) {
+	if id := m.companies; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetCompany resets all changes to the "company" edge.
-func (m *EmployeeMutation) ResetCompany() {
-	m.company = nil
-	m.clearedcompany = false
+// ResetCompanies resets all changes to the "companies" edge.
+func (m *EmployeeMutation) ResetCompanies() {
+	m.companies = nil
+	m.clearedcompanies = false
 }
 
 // Where appends a list predicates to the EmployeeMutation builder.
@@ -990,8 +990,8 @@ func (m *EmployeeMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *EmployeeMutation) AddedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.company != nil {
-		edges = append(edges, employee.EdgeCompany)
+	if m.companies != nil {
+		edges = append(edges, employee.EdgeCompanies)
 	}
 	return edges
 }
@@ -1000,8 +1000,8 @@ func (m *EmployeeMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *EmployeeMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case employee.EdgeCompany:
-		if id := m.company; id != nil {
+	case employee.EdgeCompanies:
+		if id := m.companies; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -1025,8 +1025,8 @@ func (m *EmployeeMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *EmployeeMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.clearedcompany {
-		edges = append(edges, employee.EdgeCompany)
+	if m.clearedcompanies {
+		edges = append(edges, employee.EdgeCompanies)
 	}
 	return edges
 }
@@ -1035,8 +1035,8 @@ func (m *EmployeeMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *EmployeeMutation) EdgeCleared(name string) bool {
 	switch name {
-	case employee.EdgeCompany:
-		return m.clearedcompany
+	case employee.EdgeCompanies:
+		return m.clearedcompanies
 	}
 	return false
 }
@@ -1045,8 +1045,8 @@ func (m *EmployeeMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *EmployeeMutation) ClearEdge(name string) error {
 	switch name {
-	case employee.EdgeCompany:
-		m.ClearCompany()
+	case employee.EdgeCompanies:
+		m.ClearCompanies()
 		return nil
 	}
 	return fmt.Errorf("unknown Employee unique edge %s", name)
@@ -1056,8 +1056,8 @@ func (m *EmployeeMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *EmployeeMutation) ResetEdge(name string) error {
 	switch name {
-	case employee.EdgeCompany:
-		m.ResetCompany()
+	case employee.EdgeCompanies:
+		m.ResetCompanies()
 		return nil
 	}
 	return fmt.Errorf("unknown Employee edge %s", name)

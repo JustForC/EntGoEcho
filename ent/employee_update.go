@@ -53,23 +53,23 @@ func (eu *EmployeeUpdate) SetPosition(s string) *EmployeeUpdate {
 	return eu
 }
 
-// SetCompanyID sets the "company" edge to the Company entity by ID.
-func (eu *EmployeeUpdate) SetCompanyID(id int) *EmployeeUpdate {
-	eu.mutation.SetCompanyID(id)
+// SetCompaniesID sets the "companies" edge to the Company entity by ID.
+func (eu *EmployeeUpdate) SetCompaniesID(id int) *EmployeeUpdate {
+	eu.mutation.SetCompaniesID(id)
 	return eu
 }
 
-// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
-func (eu *EmployeeUpdate) SetNillableCompanyID(id *int) *EmployeeUpdate {
+// SetNillableCompaniesID sets the "companies" edge to the Company entity by ID if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableCompaniesID(id *int) *EmployeeUpdate {
 	if id != nil {
-		eu = eu.SetCompanyID(*id)
+		eu = eu.SetCompaniesID(*id)
 	}
 	return eu
 }
 
-// SetCompany sets the "company" edge to the Company entity.
-func (eu *EmployeeUpdate) SetCompany(c *Company) *EmployeeUpdate {
-	return eu.SetCompanyID(c.ID)
+// SetCompanies sets the "companies" edge to the Company entity.
+func (eu *EmployeeUpdate) SetCompanies(c *Company) *EmployeeUpdate {
+	return eu.SetCompaniesID(c.ID)
 }
 
 // Mutation returns the EmployeeMutation object of the builder.
@@ -77,9 +77,9 @@ func (eu *EmployeeUpdate) Mutation() *EmployeeMutation {
 	return eu.mutation
 }
 
-// ClearCompany clears the "company" edge to the Company entity.
-func (eu *EmployeeUpdate) ClearCompany() *EmployeeUpdate {
-	eu.mutation.ClearCompany()
+// ClearCompanies clears the "companies" edge to the Company entity.
+func (eu *EmployeeUpdate) ClearCompanies() *EmployeeUpdate {
+	eu.mutation.ClearCompanies()
 	return eu
 }
 
@@ -183,12 +183,12 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: employee.FieldPosition,
 		})
 	}
-	if eu.mutation.CompanyCleared() {
+	if eu.mutation.CompaniesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.CompanyTable,
-			Columns: []string{employee.CompanyColumn},
+			Table:   employee.CompaniesTable,
+			Columns: []string{employee.CompaniesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -199,12 +199,12 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := eu.mutation.CompanyIDs(); len(nodes) > 0 {
+	if nodes := eu.mutation.CompaniesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.CompanyTable,
-			Columns: []string{employee.CompanyColumn},
+			Table:   employee.CompaniesTable,
+			Columns: []string{employee.CompaniesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -262,23 +262,23 @@ func (euo *EmployeeUpdateOne) SetPosition(s string) *EmployeeUpdateOne {
 	return euo
 }
 
-// SetCompanyID sets the "company" edge to the Company entity by ID.
-func (euo *EmployeeUpdateOne) SetCompanyID(id int) *EmployeeUpdateOne {
-	euo.mutation.SetCompanyID(id)
+// SetCompaniesID sets the "companies" edge to the Company entity by ID.
+func (euo *EmployeeUpdateOne) SetCompaniesID(id int) *EmployeeUpdateOne {
+	euo.mutation.SetCompaniesID(id)
 	return euo
 }
 
-// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
-func (euo *EmployeeUpdateOne) SetNillableCompanyID(id *int) *EmployeeUpdateOne {
+// SetNillableCompaniesID sets the "companies" edge to the Company entity by ID if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableCompaniesID(id *int) *EmployeeUpdateOne {
 	if id != nil {
-		euo = euo.SetCompanyID(*id)
+		euo = euo.SetCompaniesID(*id)
 	}
 	return euo
 }
 
-// SetCompany sets the "company" edge to the Company entity.
-func (euo *EmployeeUpdateOne) SetCompany(c *Company) *EmployeeUpdateOne {
-	return euo.SetCompanyID(c.ID)
+// SetCompanies sets the "companies" edge to the Company entity.
+func (euo *EmployeeUpdateOne) SetCompanies(c *Company) *EmployeeUpdateOne {
+	return euo.SetCompaniesID(c.ID)
 }
 
 // Mutation returns the EmployeeMutation object of the builder.
@@ -286,9 +286,9 @@ func (euo *EmployeeUpdateOne) Mutation() *EmployeeMutation {
 	return euo.mutation
 }
 
-// ClearCompany clears the "company" edge to the Company entity.
-func (euo *EmployeeUpdateOne) ClearCompany() *EmployeeUpdateOne {
-	euo.mutation.ClearCompany()
+// ClearCompanies clears the "companies" edge to the Company entity.
+func (euo *EmployeeUpdateOne) ClearCompanies() *EmployeeUpdateOne {
+	euo.mutation.ClearCompanies()
 	return euo
 }
 
@@ -416,12 +416,12 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 			Column: employee.FieldPosition,
 		})
 	}
-	if euo.mutation.CompanyCleared() {
+	if euo.mutation.CompaniesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.CompanyTable,
-			Columns: []string{employee.CompanyColumn},
+			Table:   employee.CompaniesTable,
+			Columns: []string{employee.CompaniesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -432,12 +432,12 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := euo.mutation.CompanyIDs(); len(nodes) > 0 {
+	if nodes := euo.mutation.CompaniesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.CompanyTable,
-			Columns: []string{employee.CompanyColumn},
+			Table:   employee.CompaniesTable,
+			Columns: []string{employee.CompaniesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

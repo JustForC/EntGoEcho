@@ -30,25 +30,25 @@ type Employee struct {
 
 // EmployeeEdges holds the relations/edges for other nodes in the graph.
 type EmployeeEdges struct {
-	// Company holds the value of the company edge.
-	Company *Company `json:"company,omitempty"`
+	// Companies holds the value of the companies edge.
+	Companies *Company `json:"companies,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// CompanyOrErr returns the Company value or an error if the edge
+// CompaniesOrErr returns the Companies value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e EmployeeEdges) CompanyOrErr() (*Company, error) {
+func (e EmployeeEdges) CompaniesOrErr() (*Company, error) {
 	if e.loadedTypes[0] {
-		if e.Company == nil {
-			// The edge company was loaded in eager-loading,
+		if e.Companies == nil {
+			// The edge companies was loaded in eager-loading,
 			// but was not found.
 			return nil, &NotFoundError{label: company.Label}
 		}
-		return e.Company, nil
+		return e.Companies, nil
 	}
-	return nil, &NotLoadedError{edge: "company"}
+	return nil, &NotLoadedError{edge: "companies"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -113,9 +113,9 @@ func (e *Employee) assignValues(columns []string, values []interface{}) error {
 	return nil
 }
 
-// QueryCompany queries the "company" edge of the Employee entity.
-func (e *Employee) QueryCompany() *CompanyQuery {
-	return (&EmployeeClient{config: e.config}).QueryCompany(e)
+// QueryCompanies queries the "companies" edge of the Employee entity.
+func (e *Employee) QueryCompanies() *CompanyQuery {
+	return (&EmployeeClient{config: e.config}).QueryCompanies(e)
 }
 
 // Update returns a builder for updating this Employee.
