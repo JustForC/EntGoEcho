@@ -1,6 +1,7 @@
 package validation
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/go-playground/validator"
@@ -12,8 +13,14 @@ type CustomValidator struct {
 }
 
 func (cv *CustomValidator) Validate(i interface{}) error {
+
 	if err := cv.Validator.Struct(i); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		errorMessage := []string{}
+		for _, e := range err.(validator.ValidationErrors) {
+			message := fmt.Sprintf("Error on field %s, condition: %s", e.Field(), e.ActualTag())
+			errorMessage = append(errorMessage, message)
+		}
+		return echo.NewHTTPError(http.StatusBadRequest, errorMessage)
 	}
 	return nil
 }
