@@ -91,6 +91,8 @@ func (empHand *employeeHandler) Delete(c echo.Context) error {
 }
 
 // Join Edges With Company
+
+// Read Edges
 func (empHand *employeeHandler) EmployeeWithCompany(c echo.Context) error {
 	ctx := context.Background()
 

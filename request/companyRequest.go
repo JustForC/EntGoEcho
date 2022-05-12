@@ -1,7 +1,7 @@
 package request
 
 type CompanyRequest struct {
-	Name    string `json:"name" validate:"required"`
-	Service string `json:"service" validate:"required"`
-	Address string `json:"address" validate:"required"`
+	Name    string `json:"company_name" validate:"required"`
+	Service string `json:"company_service" validate:"required"`
+	Address string `json:"company_address" validate:"required"`
 }
