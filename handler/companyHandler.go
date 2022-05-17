@@ -6,6 +6,7 @@ import (
 	"CompanyAPI/ent/employee"
 	"CompanyAPI/request"
 	"context"
+	"encoding/json"
 	"log"
 	"net/http"
 	"strconv"
@@ -276,4 +277,23 @@ func (compHand *companyHandler) UpdateCompanyWithUpdateEmployee(c echo.Context) 
 	}).AllX(ctx)
 
 	return c.JSON(http.StatusOK, comp)
+}
+
+func (compHand *companyHandler) TestRequestHandler(c echo.Context) error {
+	json_map := make(map[string]interface{})
+	req := new(request.CompanyRequest)
+	err := json.NewDecoder(c.Request().Body).Decode(&json_map)
+	if err != nil {
+		return err
+	} else {
+		req.Name = json_map["company_name"].(string)
+		req.Address = json_map["company_service"].(string)
+		req.Service = json_map["company_address"].(string)
+
+		if err := c.Validate(req); err != nil {
+			return err
+		}
+
+		return c.JSON(http.StatusOK, req)
+	}
 }

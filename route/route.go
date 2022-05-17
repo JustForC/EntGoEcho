@@ -59,5 +59,7 @@ func Init() *echo.Echo {
 	e.GET("/employee/company/:id", employeeHand.EmployeeWithCompanyID)
 	e.GET("/employee/:employeeid/company/:companyid", employeeHand.EmployeeIDWithCompanyID)
 
+	e.POST("/test/request", companyHand.TestRequestHandler)
+
 	return e
 }
