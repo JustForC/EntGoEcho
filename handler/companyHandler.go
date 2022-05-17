@@ -281,15 +281,12 @@ func (compHand *companyHandler) UpdateCompanyWithUpdateEmployee(c echo.Context) 
 
 func (compHand *companyHandler) TestRequestHandler(c echo.Context) error {
 	json_map := make(map[string]interface{})
-	req := new(request.CompanyRequest)
+	req := new(request.InputRequest)
 	err := json.NewDecoder(c.Request().Body).Decode(&json_map)
 	if err != nil {
 		return err
 	} else {
-		req.Name = json_map["company_name"].(string)
-		req.Address = json_map["company_service"].(string)
-		req.Service = json_map["company_address"].(string)
-
+		req.Check_one = json_map["check_one"].(string)
 		if err := c.Validate(req); err != nil {
 			return err
 		}
