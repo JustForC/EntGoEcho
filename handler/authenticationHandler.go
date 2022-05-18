@@ -36,6 +36,26 @@ func (authHandler *authenticationHandler) Register(c echo.Context) error {
 		return err
 	}
 
+	duplicateUser := authHandler.db.User.Query().Where(user.Username(req.Username)).ExistX(ctx)
+	duplicateEmail := authHandler.db.User.Query().Where(user.Email(req.Email)).ExistX(ctx)
+
+	if duplicateUser == false && duplicateEmail == false {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"username": "Username already exist!",
+			"email":    "Email already exist!",
+		})
+	}
+	if duplicateUser == false && duplicateEmail == true {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"email": "Email already exist!",
+		})
+	}
+	if duplicateUser == true && duplicateEmail == false {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"username": "Username already exist!",
+		})
+	}
+
 	user, wrong := authHandler.db.User.Create().SetEmail(req.Email).SetName(req.Name).SetPassword(string(password)).SetUsername(req.Username).Save(ctx)
 
 	if wrong != nil {
