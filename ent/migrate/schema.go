@@ -39,14 +39,29 @@ var (
 				Symbol:     "employees_companies_employees",
 				Columns:    []*schema.Column{EmployeesColumns[4]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
-				OnDelete:   schema.SetNull,
+				OnDelete:   schema.Cascade,
 			},
 		},
+	}
+	// UsersColumns holds the columns for the "users" table.
+	UsersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "username", Type: field.TypeString, Unique: true},
+		{Name: "password", Type: field.TypeString},
+		{Name: "email", Type: field.TypeString, Unique: true},
+	}
+	// UsersTable holds the schema information for the "users" table.
+	UsersTable = &schema.Table{
+		Name:       "users",
+		Columns:    UsersColumns,
+		PrimaryKey: []*schema.Column{UsersColumns[0]},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		CompaniesTable,
 		EmployeesTable,
+		UsersTable,
 	}
 )
 

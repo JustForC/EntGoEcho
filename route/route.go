@@ -24,6 +24,7 @@ func Init() *echo.Echo {
 
 	companyHand := handler.NewCompanyHandler(db)
 	employeeHand := handler.NewEmployeeHandler(db)
+	authHand := handler.NewAuthenticationHandler(db)
 
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, "Hello, World!")
@@ -60,6 +61,10 @@ func Init() *echo.Echo {
 	e.GET("/employee/:employeeid/company/:companyid", employeeHand.EmployeeIDWithCompanyID)
 
 	e.POST("/test/request", companyHand.TestRequestHandler)
+
+	// Authentication
+	e.POST("/auth/register", authHand.Register)
+	e.POST("/auth/login", authHand.Login)
 
 	return e
 }

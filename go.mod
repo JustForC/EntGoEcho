@@ -8,6 +8,7 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo/v4 v4.7.2
+	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3
 )
 
 require (
@@ -28,7 +29,6 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
-	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
 	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect

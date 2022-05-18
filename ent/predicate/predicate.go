@@ -11,3 +11,6 @@ type Company func(*sql.Selector)
 
 // Employee is the predicate function for employee builders.
 type Employee func(*sql.Selector)
+
+// User is the predicate function for user builders.
+type User func(*sql.Selector)

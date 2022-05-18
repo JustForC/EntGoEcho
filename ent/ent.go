@@ -5,6 +5,7 @@ package ent
 import (
 	"CompanyAPI/ent/company"
 	"CompanyAPI/ent/employee"
+	"CompanyAPI/ent/user"
 	"errors"
 	"fmt"
 
@@ -32,6 +33,7 @@ func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
 		company.Table:  company.ValidColumn,
 		employee.Table: employee.ValidColumn,
+		user.Table:     user.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {
