@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func Init() *echo.Echo {
@@ -30,22 +31,24 @@ func Init() *echo.Echo {
 		return c.JSON(http.StatusOK, "Hello, World!")
 	})
 
+	r := e.Group("/company")
+	r.Use(middleware.JWTWithConfig(handler.Config()))
 	// Company
-	e.POST("/company", companyHand.Create)
-	e.GET("/company", companyHand.Read)
-	e.GET("/company/:id", companyHand.ReadByID)
-	e.PUT("/company/:id", companyHand.Update)
-	e.DELETE("/company/:id", companyHand.Delete)
+	r.POST("", companyHand.Create)
+	r.GET("", companyHand.Read)
+	r.GET("/:id", companyHand.ReadByID)
+	r.PUT("/:id", companyHand.Update)
+	r.DELETE("/:id", companyHand.Delete)
 
 	// Join Company With Employee
-	e.GET("/company/employee", companyHand.CompanyWithEmployee)
-	e.GET("/company/:id/employee", companyHand.CompanyIDWithEmployee)
-	e.GET("/company/employee/:id", companyHand.CompanyWithEmployeeID)
-	e.GET("/company/:companyid/employee/:employeeid", companyHand.CompanyIDWithEmployeeID)
+	r.GET("/employee", companyHand.CompanyWithEmployee)
+	r.GET("/:id/employee", companyHand.CompanyIDWithEmployee)
+	r.GET("/employee/:id", companyHand.CompanyWithEmployeeID)
+	r.GET("/:companyid/employee/:employeeid", companyHand.CompanyIDWithEmployeeID)
 
-	e.PUT("/company/:id/employee", companyHand.UpdateCompanyWithEmployee)
-	e.PUT("/company/employee/:id", companyHand.CompanyWithUpdateEmployee)
-	e.PUT("/company/:companyid/employee/:employeeid", companyHand.UpdateCompanyWithUpdateEmployee)
+	r.PUT("/:id/employee", companyHand.UpdateCompanyWithEmployee)
+	r.PUT("/employee/:id", companyHand.CompanyWithUpdateEmployee)
+	r.PUT("/:companyid/employee/:employeeid", companyHand.UpdateCompanyWithUpdateEmployee)
 
 	// Employee
 	e.POST("/employee", employeeHand.Create)

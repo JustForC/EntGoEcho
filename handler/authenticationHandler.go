@@ -6,10 +6,18 @@ import (
 	"CompanyAPI/request"
 	"context"
 	"net/http"
+	"time"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"golang.org/x/crypto/bcrypt"
 )
+
+type jwtCustomClaim struct {
+	Name string `json:"name"`
+	jwt.StandardClaims
+}
 
 type authenticationHandler struct {
 	db *ent.Client
@@ -39,7 +47,7 @@ func (authHandler *authenticationHandler) Register(c echo.Context) error {
 	duplicateUser := authHandler.db.User.Query().Where(user.Username(req.Username)).ExistX(ctx)
 	duplicateEmail := authHandler.db.User.Query().Where(user.Email(req.Email)).ExistX(ctx)
 
-	if duplicateUser == false && duplicateEmail == false {
+	if duplicateUser == true && duplicateEmail == true {
 		return c.JSON(http.StatusBadRequest, echo.Map{
 			"username": "Username already exist!",
 			"email":    "Email already exist!",
@@ -86,5 +94,34 @@ func (authHandler *authenticationHandler) Login(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "Wrong Username/Password!")
 	}
 
-	return c.JSON(http.StatusOK, "Login!")
+	claims := &jwtCustomClaim{
+		authHandler.db.User.Query().Where(user.Username(req.Username)).Select(user.FieldName).StringX(ctx),
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	t, _ := token.SignedString([]byte("secret"))
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"token": t,
+	})
+}
+
+func (authHandler *authenticationHandler) Restricted(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*jwtCustomClaim)
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"name": "This user name is " + claims.Name,
+	})
+}
+
+func Config() middleware.JWTConfig {
+	return middleware.JWTConfig{
+		Claims:     &jwtCustomClaim{},
+		SigningKey: []byte("secret"),
+	}
 }
