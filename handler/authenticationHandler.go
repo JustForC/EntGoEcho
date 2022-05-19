@@ -105,9 +105,15 @@ func (authHandler *authenticationHandler) Login(c echo.Context) error {
 
 	t, _ := token.SignedString([]byte("secret"))
 
-	return c.JSON(http.StatusOK, echo.Map{
-		"token": t,
-	})
+	author := new(http.Cookie)
+
+	author.Name = "Token"
+	author.Value = t
+	author.Path = "/"
+
+	c.SetCookie(author)
+
+	return c.JSON(http.StatusOK, author)
 }
 
 func (authHandler *authenticationHandler) Restricted(c echo.Context) error {
@@ -121,7 +127,22 @@ func (authHandler *authenticationHandler) Restricted(c echo.Context) error {
 
 func Config() middleware.JWTConfig {
 	return middleware.JWTConfig{
-		Claims:     &jwtCustomClaim{},
-		SigningKey: []byte("secret"),
+		SigningKey:  []byte("secret"),
+		TokenLookup: "cookie:Token",
 	}
+}
+
+func (authHandler *authenticationHandler) Logout(c echo.Context) error {
+	cookie := &http.Cookie{
+		Name:    "Token",
+		Value:   "",
+		Path:    "/",
+		Expires: time.Unix(0, 0),
+	}
+
+	c.SetCookie(cookie)
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"message": "Logout Success!",
+	})
 }

@@ -26,6 +26,7 @@ func Init() *echo.Echo {
 	companyHand := handler.NewCompanyHandler(db)
 	employeeHand := handler.NewEmployeeHandler(db)
 	authHand := handler.NewAuthenticationHandler(db)
+	cHand := handler.NewCookieHandler(db)
 
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, "Hello, World!")
@@ -68,6 +69,12 @@ func Init() *echo.Echo {
 	// Authentication
 	e.POST("/auth/register", authHand.Register)
 	e.POST("/auth/login", authHand.Login)
+	e.POST("/auth/logout", authHand.Logout)
+
+	// Cookie
+	e.POST("/cookie/create", cHand.CreateCookie)
+	e.GET("/read", cHand.ReadCookie)
+	e.POST("/cookie/delete", cHand.DeleteCookie)
 
 	return e
 }
